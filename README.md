@@ -20,4 +20,5 @@ Grafik ve istatistik tabanlı analiz paneli
 Yetkilendirme sistemi ile farklı kullanıcı rolleri
 
 Bu sistem sayesinde bir kurumun hem günlük stok ihtiyaçları, hem de bir sonraki yıl için tahmini malzeme planlaması kolayca yapılabilir. Kullanıcı dostu arayüzü ve dinamik raporlama altyapısı ile operasyonel iş yükünü azaltmayı hedefler.
+
 iletişim: yldzibrhim@gmail.com
