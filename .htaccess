@@ -1,0 +1,61 @@
+# PHP handler (cPanel)
+<IfModule mime_module>
+  AddHandler application/x-httpd-ea-php74 .php .php7 .phtml
+</IfModule>
+
+# Temel güvenlik ayarları
+Options -Indexes -MultiViews
+php_flag display_errors off
+
+# HTTPS yönlendirmesi
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# www olmadan yönlendirme
+RewriteCond %{HTTP_HOST} ^www\.yildizfirsat\.com\.tr [NC]
+RewriteRule ^(.*)$ https://yildizfirsat.com.tr/$1 [L,R=301]
+
+# Büyük/küçük harf duyarsızlığı
+RewriteMap tolower int:tolower
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)$ ${tolower:$1} [R=301,L]
+
+# Hassas dosyaları koru
+<FilesMatch "\.(htaccess|htpasswd|ini|log|sh|sql|env|session_kontrol\.php)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Ana sayfayı login'e yönlendir
+RewriteRule ^$ /login [L,R=301]
+
+# .php uzantılarını gizleme ve URL yönlendirmeleri
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.php -f
+RewriteRule ^([^/]+)/?$ $1.php [L]
+
+# Özel sayfa yönlendirmeleri
+RewriteRule ^login/?$ login.php [L,NC]
+RewriteRule ^dashboard/?$ dashboard.php [L,NC]
+# Diğer sayfalarınız için benzer kurallar ekleyin
+
+# Hata dokümanları
+ErrorDocument 404 /404
+ErrorDocument 403 /403
+
+# Mevcut dosya veya dizinlere doğrudan erişime izin ver
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Tüm diğer istekleri login.php'ye yönlendir
+RewriteRule ^(.*)$ login.php [QSA,L]
+
+# php -- BEGIN cPanel-generated handler, do not edit
+# Set the “ea-php84” package as the default “PHP” programming language.
+<IfModule mime_module>
+  AddHandler application/x-httpd-ea-php84 .php .php8 .phtml
+</IfModule>
+# php -- END cPanel-generated handler, do not edit
